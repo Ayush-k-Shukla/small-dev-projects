@@ -11,12 +11,18 @@ export const startWebServer = (
     req.send(`Requested path : ${req.path}`);
   });
 
+  myServer.get('/test', (req: IHttpRequest): void => {
+    req.send(`Requested path : ${req.path}`);
+  });
+
   myServer.get('/get-error', () => {
-    console.log('in error');
-    return new Error('Some error occurred');
+    throw new Error('Some error occurred');
   });
 
   myServer.startServer();
+
+  // need to test
+  // myServer.stopServer();
   return myServer;
 };
 

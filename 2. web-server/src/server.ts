@@ -1,7 +1,7 @@
 import * as net from 'net';
 import path from 'path';
 import { HttpStatusCodes } from './core/constant';
-import { createKeyFromMethodAndPath } from './core/helper';
+import { createKeyFromMethodAndPath, getStatusMessage } from './core/helper';
 import { HttpRequest, IHttpRequest } from './request';
 
 path.join(__dirname, '');
@@ -85,18 +85,28 @@ export class HttpServer implements IHttpServer {
       console.log(`Server started listening on ${this.host}:${this.port}`);
     });
 
-    // emitted when a new connection is established
-    this.server.on('connection', (sock) => {
-      sock.on('data', (data: any) => {
+    /**
+     * Emitted when a new connection is made. `socket` is an instance of net.Socket.
+     */
+    this.server.on('connection', (socket) => {
+      // Emitted when data is received. The argument data will be a Buffer or String
+      socket.on('data', (data: any) => {
         const input = data.toString();
-        console.log('Got input on connection link -> \n', input);
-
-        const request = this.parseRequestData(sock, input);
-
-        this.forwardRequestToListener(request);
+        const request: IHttpRequest = this.parseRequestData(socket, input);
+        this.executeRequestToListener(request);
       });
 
-      sock.on('send', () => {});
+      // received when ever a new request is made from request object
+      socket.on(
+        'send',
+        (req: IHttpRequest, requestData: string, statusCode: number) => {
+          const res = this.prepareResponse(req, requestData, statusCode);
+
+          socket.write(res);
+          socket.end();
+          socket.destroy();
+        }
+      );
     });
   }
 
@@ -111,7 +121,7 @@ export class HttpServer implements IHttpServer {
   }
 
   /**
-   * Get function to register incoming request to listener
+   * Get function to register GET requests to listener
    *
    * @param {string} path
    * @param {(req: IHttpRequest) => void} cb
@@ -119,13 +129,52 @@ export class HttpServer implements IHttpServer {
    */
   get(path: string, cb: (req: IHttpRequest) => void): void {
     const key = createKeyFromMethodAndPath('GET', path);
+
     this.listeners.set(key, cb);
   }
 
   /* ------------------------------- Private Helpers ------------------------------------------- */
 
   /**
-   * Forward incoming request to listener
+   * Prepares response for with given request data
+   *
+   * @private
+   * @param {IHttpRequest} request
+   * @param {string} [responseData='']
+   * @param {number} [statusCode=200]
+   * @return {*}  {string}
+   * @memberof HttpServer
+   */
+  private prepareResponse(
+    request: IHttpRequest,
+    responseData: string = '',
+    statusCode: number = 200
+  ): string {
+    const headers = this.prepareResponseHeader(request, statusCode);
+    return `${headers}${responseData}`;
+  }
+
+  /**
+   * Create response header
+   *
+   * @private
+   * @param {IHttpRequest} request
+   * @param {number} [statusCode=200]
+   * @return {*}  {string}
+   * @memberof HttpServer
+   */
+  private prepareResponseHeader(
+    request: IHttpRequest,
+    statusCode: number = 200
+  ): string {
+    let str = `${request.httpVersion} ${statusCode} `;
+    str += getStatusMessage(statusCode);
+    str += `\n\n`;
+    return str;
+  }
+
+  /**
+   * Execute incoming request to listener
    * If no listener is registered then the server will respond with 404 status code
    * If any error is encountered during callback execution then respond with 500 status code
    *
@@ -134,7 +183,7 @@ export class HttpServer implements IHttpServer {
    * @return {*}
    * @memberof HttpServer
    */
-  private forwardRequestToListener(request: IHttpRequest): void {
+  private executeRequestToListener(request: IHttpRequest): void {
     const key = createKeyFromMethodAndPath(request.method, request.path);
 
     if (this.listeners.has(key)) {
@@ -163,7 +212,6 @@ export class HttpServer implements IHttpServer {
    */
   private parseRequestData(sock: net.Socket, data: string): IHttpRequest {
     const lines = data.split(/\r\n|\n/);
-    console.log(lines);
     const elements = lines[0].split(' ');
 
     const method = elements[0];

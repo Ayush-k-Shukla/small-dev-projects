@@ -1,10 +1,43 @@
 import net from 'net';
 
 export interface IHttpRequest {
+  /**
+   * Represents the method of incoming HTTP request
+   *
+   * @type {string}
+   * @memberof IHttpRequest
+   */
   method: string;
+
+  /**
+   * Represents the path of the incoming HTTP request
+   *
+   * @type {string}
+   * @memberof IHttpRequest
+   */
   path: string;
+
+  /**
+   * Represents the headers of the incoming HTTP request
+   *
+   * @type {Map<string, string>}
+   * @memberof IHttpRequest
+   */
   headers: Map<string, string>;
+
+  /**
+   * Represents the body of the incoming HTTP request version
+   *
+   * @type {string}
+   * @memberof IHttpRequest
+   */
   httpVersion: string;
+
+  /**
+   * Send function to send data back
+   *
+   * @memberof IHttpRequest
+   */
   send: (data?: string, statusCode?: number) => void;
   sendFile: (path: string) => void;
 }
@@ -30,7 +63,9 @@ export class HttpRequest implements IHttpRequest {
     this.httpVersion = httpVersion;
   }
 
-  send(data = '', statusCode = 200): void {}
+  send(data = '', statusCode = 200): void {
+    this.sock.emit('send', this, data, statusCode);
+  }
 
   sendFile(path: string) {}
 }
