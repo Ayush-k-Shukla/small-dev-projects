@@ -1,4 +1,5 @@
 import net from 'net';
+import { HttpStatusCodes } from './core/constant';
 
 export interface IHttpRequest {
   /**
@@ -63,7 +64,7 @@ export class HttpRequest implements IHttpRequest {
     this.httpVersion = httpVersion;
   }
 
-  send(data = '', statusCode = 200): void {
+  send(data = '', statusCode = HttpStatusCodes.OK): void {
     this.sock.emit('send', this, data, statusCode);
   }
 

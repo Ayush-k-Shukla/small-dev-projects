@@ -59,11 +59,17 @@ export class HttpServer implements IHttpServer {
   readonly host: string;
   readonly port: number;
   readonly server;
-  readonly listeners;
+  private readonly listeners;
+  private readonly debugMode: boolean = false;
 
-  constructor(host: string = '127.0.0.1', port: number = 80) {
+  constructor(
+    host: string = '127.0.0.1',
+    port: number = 80,
+    debugMode: boolean = false
+  ) {
     this.host = host;
     this.port = port;
+    this.debugMode = debugMode;
     this.server = new net.Server();
     this.listeners = new Map<string, (req: IHttpRequest) => void>();
   }
@@ -80,9 +86,11 @@ export class HttpServer implements IHttpServer {
       return;
     }
 
-    // Start a TCP connection
+    // Start a TCP connection on given port and host
     this.server.listen(this.port, this.host, () => {
-      console.log(`Server started listening on ${this.host}:${this.port}`);
+      if (this.debugMode) {
+        console.log(`Server started listening on ${this.host}:${this.port}`);
+      }
     });
 
     /**
@@ -129,7 +137,6 @@ export class HttpServer implements IHttpServer {
    */
   get(path: string, cb: (req: IHttpRequest) => void): void {
     const key = createKeyFromMethodAndPath('GET', path);
-
     this.listeners.set(key, cb);
   }
 
@@ -191,7 +198,9 @@ export class HttpServer implements IHttpServer {
         const cb = this.listeners.get(key)!;
         cb(request); // Process request callback
       } catch (err) {
-        console.log(err);
+        if (this.debugMode) {
+          console.log(err);
+        }
         request.send(undefined, HttpStatusCodes.INTERNAL_SERVER_ERROR);
       }
       return;
@@ -238,6 +247,7 @@ export class HttpServer implements IHttpServer {
       const elem = elements[i].split(':');
       headers.set(elem[0], elem[1]);
     }
+
     return headers;
   }
 }
