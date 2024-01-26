@@ -17,3 +17,17 @@ export function getStatusMessage(status?: number): string {
   }
   return 'OK';
 }
+
+/**
+ * Creates a key for method and path
+ *
+ * @param {string} method
+ * @param {string} path
+ * @return {*}  {string}
+ */
+export function createKeyFromMethodAndPath(
+  method: string,
+  path: string
+): string {
+  return `${method?.toUpperCase()}-${path}`;
+}
