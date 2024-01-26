@@ -1,3 +1,4 @@
+import fs from 'fs';
 import net from 'net';
 import { HttpStatusCodes } from './core/constant';
 
@@ -40,6 +41,13 @@ export interface IHttpRequest {
    * @memberof IHttpRequest
    */
   send: (data?: string, statusCode?: number) => void;
+
+  /**
+   * Sends file to client
+   * Can be used to server html files
+   *
+   * @memberof IHttpRequest
+   */
   sendFile: (path: string) => void;
 }
 
@@ -68,5 +76,13 @@ export class HttpRequest implements IHttpRequest {
     this.sock.emit('send', this, data, statusCode);
   }
 
-  sendFile(path: string) {}
+  sendFile(path: string) {
+    if (fs.existsSync(path)) {
+      const fileData = fs.readFileSync(path, 'utf-8');
+      this.sock.emit('send', this, fileData, HttpStatusCodes.OK);
+      return;
+    }
+
+    this.sock.emit('send', this, 'File not Found', HttpStatusCodes.NOT_FOUND);
+  }
 }

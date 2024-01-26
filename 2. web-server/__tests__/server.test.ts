@@ -46,6 +46,15 @@ describe('Testing Server', () => {
     });
   });
 
+  test('Serving HTML file test', async () => {
+    const path = '/index.html';
+    const url = baseUrl + path;
+    const res = await axios.get(url);
+
+    expect(200).toBe(HttpStatusCodes.OK);
+    expect(res.data).toContain('Serving Html');
+  });
+
   afterAll(() => {
     mockServer.stopServer();
   });

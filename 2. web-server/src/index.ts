@@ -1,3 +1,4 @@
+import path from 'path';
 import { IHttpRequest } from './request';
 import { HttpServer } from './server';
 
@@ -10,6 +11,10 @@ export const createWebServer = (
 
   myServer.get('/', (req: IHttpRequest): void => {
     req.send(`Requested path : ${req.path}`);
+  });
+
+  myServer.get('/index.html', (req: IHttpRequest): void => {
+    req.sendFile(path.join(__dirname, './public/index.html'));
   });
 
   myServer.get('/break-server', () => {
