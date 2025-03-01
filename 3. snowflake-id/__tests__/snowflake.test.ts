@@ -4,7 +4,7 @@ describe('Snowflake ID Generator', () => {
   let generator: SnowFlake;
 
   beforeEach(() => {
-    generator = new SnowFlake(1);
+    generator = new SnowFlake(1, 100);
   });
 
   test('Generated IDs should be unique', () => {
@@ -26,8 +26,8 @@ describe('Snowflake ID Generator', () => {
   });
 
   test('Machine ID out of range should throw an error', () => {
-    expect(() => new SnowFlake(1024)).toThrowErrorMatchingSnapshot();
-    expect(() => new SnowFlake(-1)).toThrowErrorMatchingSnapshot();
+    expect(() => new SnowFlake(1024, 10)).toThrowErrorMatchingSnapshot();
+    expect(() => new SnowFlake(-1, 10)).toThrowErrorMatchingSnapshot();
   });
 
   test('Clock moving backwards should throw an error', () => {

@@ -10,8 +10,10 @@ class SnowFlake {
   private machineId: bigint;
   private lastTimeStamp: bigint = -1n;
   private sequence: bigint = 0n;
+  private cacheIds: bigint[] = [];
+  private cacheSize: bigint = 0n;
 
-  constructor(machineId: number) {
+  constructor(machineId: number, cacheSize: number) {
     if (
       machineId < 0 ||
       machineId > Number(SnowFlake.MAX_POSSIBLE_MACHINE_ID)
@@ -21,6 +23,7 @@ class SnowFlake {
       );
     }
     this.machineId = BigInt(machineId);
+    this.cacheSize = BigInt(cacheSize);
   }
 
   private currentTimeStamp(): bigint {
@@ -35,7 +38,7 @@ class SnowFlake {
     return timestamp;
   }
 
-  public generateId() {
+  private generateNewId() {
     let timestamp = this.currentTimeStamp();
 
     if (timestamp < this.lastTimeStamp) {
@@ -61,6 +64,20 @@ class SnowFlake {
       this.sequence;
 
     return id;
+  }
+
+  private refillCache() {
+    let c = this.cacheSize;
+    while (c--) {
+      this.cacheIds.push(this.generateNewId());
+    }
+  }
+
+  public generateId(): bigint {
+    if (this.cacheIds.length === 0) {
+      this.refillCache();
+    }
+    return this.cacheIds.shift()!;
   }
 }
 
