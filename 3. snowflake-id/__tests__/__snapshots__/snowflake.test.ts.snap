@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snowflake ID Generator Clock moving backwards should throw an error: Clock moved backwards. Refusing to generate ID 1`] = `"Clock moved backwards. Refusing to generate ID"`;
+
+exports[`Snowflake ID Generator Machine ID out of range should throw an error 1`] = `"Machine ID must be between 0 and 1023"`;
+
+exports[`Snowflake ID Generator Machine ID out of range should throw an error 2`] = `"Machine ID must be between 0 and 1023"`;
