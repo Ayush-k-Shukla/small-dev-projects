@@ -1,0 +1,23 @@
+{
+  "name": "sse",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:http1": "nodemon --exec ts-node src/sse-http1.ts",
+    "dev:http2": "nodemon --exec ts-node src/sse-http2.ts"
+  },
+  "author": "Ayush",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^20.11.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "kafkajs": "^2.2.4"
+  }
+}

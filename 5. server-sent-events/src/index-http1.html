@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SSE-HTTP1</title>
+  </head>
+  <body>
+    <button>Close the connection</button>
+
+    <ul></ul>
+
+    <script>
+      const button = document.querySelector('button');
+      const evtSource = new EventSource('http://localhost:4001/events');
+      console.log(evtSource.withCredentials);
+      console.log(evtSource.readyState);
+      console.log(evtSource.url);
+      const eventList = document.querySelector('ul');
+
+      evtSource.onopen = function () {
+        console.log('Connection to server opened.');
+      };
+
+      evtSource.addEventListener('customEvent', (e) => {
+        console.log(e);
+        const newElement = document.createElement('li');
+
+        newElement.textContent = 'message: ' + e.data;
+        eventList.appendChild(newElement);
+      });
+
+      evtSource.onerror = function () {
+        console.log('EventSource failed.');
+      };
+
+      button.onclick = function () {
+        console.log('Connection closed');
+        evtSource.close();
+      };
+    </script>
+  </body>
+</html>

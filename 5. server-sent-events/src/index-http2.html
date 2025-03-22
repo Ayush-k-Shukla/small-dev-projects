@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SSE-HTTP2</title>
+  </head>
+  <body>
+    <button>Close the connection</button>
+
+    <ul></ul>
+
+    <script>
+      //TODO This has some issue with mapping need fix
+      const button = document.querySelector('button');
+      const evtSource = new EventSource('https://localhost:4000/events', {
+        withCredentials: true
+      });
+      console.log(evtSource.withCredentials);
+      console.log(evtSource.readyState);
+      console.log(evtSource.url);
+      const eventList = document.querySelector('ul');
+
+      evtSource.onopen = function () {
+        console.log('Connection to server opened.');
+      };
+
+      evtSource.addEventListener('customEvent', (e) => {
+        const joke = JSON.parse(e.data);
+        console.log(e);
+        const newElement = document.createElement('li');
+
+        newElement.textContent = 'message: ' + joke;
+        eventList.appendChild(newElement);
+      });
+
+      evtSource.onerror = function () {
+        console.log('EventSource failed.');
+      };
+
+      button.onclick = function () {
+        console.log('Connection closed');
+        evtSource.close();
+      };
+    </script>
+  </body>
+</html>
