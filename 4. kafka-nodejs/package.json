@@ -1,0 +1,19 @@
+{
+  "name": "kafka-nodejs",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:producer": "nodemon --exec ts-node src/producer.ts",
+    "dev:consumer": "nodemon --exec ts-node src/consumer.ts"
+  },
+  "author": "Ayush",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}
