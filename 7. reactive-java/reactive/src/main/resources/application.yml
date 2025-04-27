@@ -1,0 +1,21 @@
+spring:
+  sql:
+    init:
+      mode: always
+      platform: postgres
+      schema-locations: classpath:schema.sql
+  application:
+    name: reactive
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/reactive_learning
+    username: postgres
+    password: postgres
+server:
+  port: 8080
+
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html
