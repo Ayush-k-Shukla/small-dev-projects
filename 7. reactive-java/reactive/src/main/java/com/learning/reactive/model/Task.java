@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class Task {
 
     @Id
-    private String id;
+    private Long id;
     private String title;
     private String description;
     private Boolean completed = false;

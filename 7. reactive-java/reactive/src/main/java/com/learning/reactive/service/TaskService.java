@@ -34,7 +34,8 @@ public class TaskService {
 
     public Mono<Void> deleteTask(Long id){
         log.info("Deleting task: {}", id);
-        return  taskRepository.deleteById(id).switchIfEmpty(Mono.error(new ResourceNotFoundException("Task not found with id:"+id)));
+        return  taskRepository.deleteById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Task not found with id:"+id)));
     }
 
     public Mono<Task> updateTask(Long id, Task updatedTask){
