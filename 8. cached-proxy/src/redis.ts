@@ -15,6 +15,10 @@ class Cache {
     });
   }
 
+  async connect() {
+    await this.redisClient.connect();
+  }
+
   async get<T>(key: string): Promise<T | null> {
     const d = await this.redisClient.get(key);
     return d ? JSON.parse(d) : null;
@@ -22,10 +26,7 @@ class Cache {
 
   async set(key: string, value: any): Promise<void> {
     await this.redisClient.set(key, JSON.stringify(value), {
-      expiration: {
-        type: 'EX',
-        value: 600
-      }
+      EX: 600
     });
   }
 
