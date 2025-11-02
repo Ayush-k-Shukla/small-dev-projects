@@ -1,0 +1,27 @@
+{
+  "name": "8.-cached-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc",
+    "dev:server": "ts-node src/server.ts",
+    "dev:client": "ts-node src/client.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.18.13",
+    "grpc-tools": "^1.13.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "ts-proto": "^2.8.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.0",
+    "@grpc/proto-loader": "^0.8.0"
+  }
+}
