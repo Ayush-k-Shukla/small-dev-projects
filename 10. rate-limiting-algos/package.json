@@ -1,10 +1,8 @@
 {
-  "name": "8.-cached-proxy",
+  "name": "10.rate-limiting-algos",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "dev": "nodemon",
     "build": "tsc"
   },
   "keywords": [],
