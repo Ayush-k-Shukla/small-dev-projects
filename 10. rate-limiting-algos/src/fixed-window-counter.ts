@@ -14,7 +14,6 @@ class FixedWindowCounter {
   public allowRequest(): boolean {
     const window: number = this.currentWindow();
 
-    console.log('win: ', window, Date.now());
     if (this.currentActiveWindow === window) {
       if (this.currentWindowRequestCount < this.maxRequest) {
         this.currentWindowRequestCount += 1;
