@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Web, Shared & Service Workers Demo</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 40px;
+        background: #f7f7f7;
+      }
+      section {
+        background: #fff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      button {
+        padding: 8px 12px;
+        margin-top: 10px;
+      }
+      input {
+        padding: 6px;
+      }
+      h2 {
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Workers Playground</h1>
+
+    <section>
+      <h2>Web Worker (Heavy Computation)</h2>
+      <input id="fibInput" type="number" placeholder="Enter n for Fibonacci" />
+      <button id="fibBtn">Calculate</button>
+      <p id="fibResult"></p>
+    </section>
+
+    <section>
+      <h2>Shared Worker (Shared Counter Across Tabs)</h2>
+      <p>Open this page in multiple tabs!</p>
+      <button id="incBtn">Increment Counter</button>
+      <p>Shared Count: <span id="sharedCount">0</span></p>
+    </section>
+
+    <section>
+      <h2>Fetch Data (to test offline cache)</h2>
+      <h3 id="swStatus"></h3>
+      <button id="fetchData">Fetch Post</button>
+      <pre id="apiResult"></pre>
+    </section>
+
+    <script src="main.js"></script>
+  </body>
+</html>
