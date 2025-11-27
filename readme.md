@@ -18,3 +18,4 @@ A collection of mini-projects built for learning purposes, exploring system desi
 | 12  | [Mini Virtual DOM](./12.%20mini-virtual-dom/)           | A simplified Virtual DOM implementation to understand React internals.   |
 | 13  | [Intersection Observer](./13.%20Intersection-observer/) | Usage of Intersection Observer API for lazy loading and infinite scroll. |
 | 14  | [Redis Clone](./14.%20redis-clone/)                     | Simple Minimal Redis implementation with RESP serialization support      |
+| 15  | [Micro Frontend](./15.%20micro-frontend-app/)           | Basic Implementation for MF with module federation in webpack            |
