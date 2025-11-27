@@ -1,0 +1,15 @@
+{
+  "name": "micro-frontend-app",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start:host": "npm start --workspace=react-host",
+    "start:remote": "npm start --workspace=vue-remote",
+    "start": "concurrently \"npm run start:host\" \"npm run start:remote\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
